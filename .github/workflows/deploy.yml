@@ -35,8 +35,19 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}  # Adjust if your bucket is in a different region
 
+      - name: Check AWS CLI
+        run: |
+          aws --version
+          aws sts get-caller-identity
+
       - name: Deploy to S3
-        run: aws s3 sync ./dist/aws-test-project/ s3://${{ secrets.BUCKET_ID }} --delete
+        run: |
+          echo "Starting S3 sync..."
+          aws s3 sync ./dist/aws-test-project/ s3://${{ secrets.BUCKET_ID }} --delete
+          echo "S3 sync completed successfully"
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
+        run: |
+          echo "Invalidating CloudFront cache..."
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
+          echo "CloudFront invalidation completed"
