@@ -10,24 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code from repo
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 3. Install dependencies and build
       - name: Install dependencies
         run: npm ci
 
       - name: Build Angular app
         run: npm run build -- --configuration=production
 
-      # 4. Configure AWS credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -35,10 +31,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      # 5. Sync built files to S3 bucket
       - name: Deploy to S3
-        run: "aws s3 sync ./dist/ s3://${{ secrets.BUCKET_ID }} --delete"
+        run: |
+          aws s3 sync ./dist/ s3://${{ secrets.BUCKET_ID }} --delete
 
-      # 6. Invalidate CloudFront cache
       - name: Invalidate CloudFront
-        run:  aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.DISTRIBUTION_ID }} \
+            --paths "/*"
