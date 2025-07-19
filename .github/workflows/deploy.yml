@@ -43,9 +43,9 @@ jobs:
       - name: List build files
         run: |
           echo "=== Build Directory Contents ==="
-          ls -la dist/aws-test-project/
+          ls -la dist/
           echo "=== Total size ==="
-          du -sh dist/aws-test-project/
+          du -sh dist/
 
       - name: Clear S3 bucket
         run: |
@@ -56,7 +56,7 @@ jobs:
       - name: Deploy to S3
         run: |
           echo "=== Starting S3 sync ==="
-          aws s3 sync ./dist/aws-test-project/ s3://${{ secrets.BUCKET_ID }}
+          aws s3 sync ./dist/ s3://${{ secrets.BUCKET_ID }}
           echo "=== S3 sync completed successfully ==="
 
       - name: Invalidate CloudFront cache
