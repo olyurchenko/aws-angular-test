@@ -3,7 +3,7 @@ name: Deploy Angular App
 on:
   push:
     branches:
-      - main  # Trigger on push to main branch
+      - main # Trigger on push to main branch
 
 jobs:
   deploy:
@@ -42,7 +42,7 @@ jobs:
           echo "=== AWS Identity ==="
           aws sts get-caller-identity
           echo "=== S3 Bucket Check ==="
-          aws s3 ls s3://${{ secrets.BUCKET_ID }} || echo "Cannot list bucket contents"
+          aws s3 ls s3://${{ secrets.BUCKET_ID }}
 
       - name: List build files
         run: |
