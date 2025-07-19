@@ -3,73 +3,47 @@ name: Deploy Angular App
 on:
   push:
     branches:
-      - main # Trigger on push to main branch
+      - main
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest # Use latest Ubuntu runner
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4 # Checkout the code from GitHub
+      # 1. Checkout code from repo
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      # 2. Setup Node.js environment
       - name: Setup Node.js
-        uses: actions/setup-node@v4 # Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 18 # Specify Node version
-          cache: 'npm' # Cache npm dependencies
+          node-version: 18
 
-      - name: Install dependencies
-        run: npm run ci # Use our custom ci script instead of npm ci
+      # 3. Install dependencies and build
+      - name: Install & Build
+        run: |
+          npm ci
+          npm run build -- --configuration=production
 
-      - name: Run tests
-        run: npm test # Run tests before deployment
-
-      - name: Build Angular app
-        run: npm run build -- --configuration=production # Angular production build
-
-      - name: Configure AWS credentials
+      # 4. Configure AWS credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }} # Adjust if your bucket is in a different region
+          aws-region: us-east-1
 
-      - name: Check AWS CLI and credentials
-        run: |
-          echo "=== AWS CLI Version ==="
-          aws --version
-          echo "=== AWS Identity ==="
-          aws sts get-caller-identity
-          echo "=== S3 Bucket Check ==="
-          aws s3 ls s3://${{ secrets.BUCKET_ID }}
-
-      - name: List build files
-        run: |
-          echo "=== Build Directory Contents ==="
-          ls -la dist/aws-test-project/
-          echo "=== Total size ==="
-          du -sh dist/aws-test-project/
-
+      # 5. Sync built files to S3 bucket
       - name: Deploy to S3
         run: |
-          echo "=== Starting S3 sync ==="
-          aws s3 sync ./dist/aws-test-project/ s3://${{ secrets.BUCKET_ID }} --delete --dryrun
-          echo "=== Dry run completed, starting actual sync ==="
+          echo "=== Deploying to S3 ==="
           aws s3 sync ./dist/aws-test-project/ s3://${{ secrets.BUCKET_ID }} --delete
-          echo "=== S3 sync completed successfully ==="
 
-      - name: Invalidate CloudFront cache
+      # 6. Invalidate CloudFront cache
+      - name: Invalidate CloudFront
         run: |
-          echo "=== Invalidating CloudFront cache ==="
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
-          echo "=== CloudFront invalidation completed ==="
-
-      - name: Deployment summary
-        run: |
-          echo "=== Deployment Summary ==="
-          echo "✅ Build completed"
-          echo "✅ Tests passed"
-          echo "✅ Files uploaded to S3"
-          echo "✅ CloudFront cache invalidated"
-          echo "🎉 Deployment successful!"
+          echo "=== Invalidating CloudFront Cache ==="
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.DISTRIBUTION_ID }} \
+            --paths "/*"
