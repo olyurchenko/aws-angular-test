@@ -1,27 +1,127 @@
-# AwsTestProject
+# Todo List App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.11.
+Сучасний Todo List додаток, створений з використанням Angular 17, Angular Material та Angular Signals.
 
-## Development server
+## Особливості
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- ✅ **Angular Signals** - сучасний підхід до управління станом
+- ✅ **Angular Material** - красивий та сучасний UI
+- ✅ **Standalone Components** - модульна архітектура
+- ✅ **Lazy Loading** - оптимізація завантаження
+- ✅ **Jest Testing** - сучасне тестування з високим покриттям
+- ✅ **Responsive Design** - адаптивний дизайн
 
-## Code scaffolding
+## Функціональність
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Додавання нових завдань
+- Редагування існуючих завдань (подвійний клік)
+- Позначення завдань як завершених
+- Видалення завдань
+- Відображення статистики (всього, активні, завершені)
+- Розділення на активні та завершені завдання
+- 404 сторінка для неіснуючих маршрутів
 
-## Build
+## Структура проекту
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── todo-form/          # Форма додавання todo
+│   │   ├── todo-item/          # Окремий елемент todo
+│   │   ├── todo-list/          # Основний список todo
+│   │   └── not-found/          # 404 сторінка
+│   ├── models/
+│   │   └── todo.model.ts       # Інтерфейс Todo
+│   ├── services/
+│   │   └── todo.service.ts     # Сервіс управління станом
+│   └── app-routing.module.ts   # Конфігурація роутингу
+```
 
-## Running unit tests
+## Технології
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Angular 17** - фреймворк
+- **Angular Material** - UI компоненти
+- **Angular Signals** - управління станом
+- **TypeScript** - типізація
+- **SCSS** - стилізація
+- **Jest** - тестування
 
-## Running end-to-end tests
+## Встановлення та запуск
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. Встановіть залежності:
+```bash
+npm install
+```
 
-## Further help
+2. Запустіть додаток:
+```bash
+ng serve
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+3. Відкрийте браузер: `http://localhost:4200`
+
+## Тестування
+
+### Запуск тестів
+```bash
+npm test
+```
+
+### Тести з покриттям
+```bash
+npm run test:coverage
+```
+
+### Тести в режимі watch
+```bash
+npm run test:watch
+```
+
+**Покриття тестами:** 96.87% statements, 90% branches, 100% functions
+
+## Роутинг
+
+- `/` - редірект на `/home`
+- `/home` - головна сторінка з Todo List
+- `/**` - 404 сторінка
+
+## Компоненти
+
+### TodoFormComponent
+Форма для додавання нових завдань з валідацією та обмеженням довжини.
+
+### TodoItemComponent
+Окремий елемент todo з можливістю редагування, видалення та позначення як завершеного.
+
+### TodoListComponent
+Основний компонент, що відображає список завдань з статистикою.
+
+### NotFoundComponent
+404 сторінка з кнопкою повернення на головну.
+
+## Сервіси
+
+### TodoService
+Сервіс управління станом з використанням Angular Signals:
+- `todosList` - readonly сигнал з усіма todo
+- `completedTodos` - computed сигнал з завершеними todo
+- `activeTodos` - computed сигнал з активними todo
+
+## Тестування з Jest
+
+Проект використовує Jest замість Karma для тестування:
+
+- **Швидші тести** - Jest працює швидше за Karma
+- **Кращий покриття** - детальна звітність покриття
+- **Сучасний синтаксис** - використання `jest.fn()` замість `jasmine.createSpyObj()`
+- **Гнучка конфігурація** - налаштування через `jest.config.js`
+
+### Конфігурація Jest
+- `jest.config.js` - основна конфігурація
+- `setup-jest.ts` - налаштування тестового середовища
+- `tsconfig.spec.json` - TypeScript конфігурація для тестів
+
+## Ліцензія
+
+MIT

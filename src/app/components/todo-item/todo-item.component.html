@@ -1,0 +1,44 @@
+<div class="todo-item" [class.completed]="todo.completed">
+  <mat-checkbox
+    [checked]="todo.completed"
+    (change)="toggleTodo()"
+    color="primary"
+  ></mat-checkbox>
+
+  <div class="todo-content">
+    <div *ngIf="!isEditing()" class="todo-title" (dblclick)="startEdit()">
+      {{ todo.title }}
+    </div>
+
+    <mat-form-field *ngIf="isEditing()" appearance="outline" class="edit-field">
+      <input
+        matInput
+        [ngModel]="editTitle()"
+        (ngModelChange)="editTitle.set($event)"
+        (keyup.enter)="saveEdit()"
+        (blur)="saveEdit()"
+        (keyup.escape)="cancelEdit()"
+        autofocus
+      >
+    </mat-form-field>
+  </div>
+
+  <div class="todo-actions">
+    <button
+      mat-icon-button
+      (click)="startEdit()"
+      *ngIf="!isEditing()"
+      color="primary"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      (click)="deleteTodo()"
+      color="warn"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>

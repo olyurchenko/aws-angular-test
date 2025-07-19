@@ -1,0 +1,50 @@
+<div class="todo-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Мій Todo List</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <app-todo-form></app-todo-form>
+
+      <div class="stats">
+        <mat-chip-set>
+          <mat-chip color="primary">
+            Всього: {{ todosList().length }}
+          </mat-chip>
+          <mat-chip color="accent">
+            Активні: {{ activeTodos().length }}
+          </mat-chip>
+          <mat-chip color="warn">
+            Завершені: {{ completedTodos().length }}
+          </mat-chip>
+        </mat-chip-set>
+      </div>
+
+      <mat-divider class="divider"></mat-divider>
+
+      <div class="todos-section">
+        <h3>Активні завдання</h3>
+        <div class="todos-list" *ngIf="activeTodos().length > 0">
+          <app-todo-item
+            *ngFor="let todo of activeTodos()"
+            [todo]="todo"
+          ></app-todo-item>
+        </div>
+        <p class="empty-message" *ngIf="activeTodos().length === 0">
+          Немає активних завдань
+        </p>
+      </div>
+
+      <div class="todos-section" *ngIf="completedTodos().length > 0">
+        <h3>Завершені завдання</h3>
+        <div class="todos-list">
+          <app-todo-item
+            *ngFor="let todo of completedTodos()"
+            [todo]="todo"
+          ></app-todo-item>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

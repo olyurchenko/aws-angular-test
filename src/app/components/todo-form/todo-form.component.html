@@ -1,0 +1,25 @@
+<div class="todo-form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Додати нове завдання</mat-label>
+    <input
+      matInput
+      [ngModel]="newTodoTitle()"
+      (ngModelChange)="newTodoTitle.set($event)"
+      (keyup.enter)="addTodo()"
+      placeholder="Введіть назву завдання..."
+      maxlength="100"
+    >
+    <mat-hint align="end">{{ newTodoTitle().length }}/100</mat-hint>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="addTodo()"
+    [disabled]="!newTodoTitle().trim()"
+    class="add-button"
+  >
+    <mat-icon>add</mat-icon>
+    Додати
+  </button>
+</div>

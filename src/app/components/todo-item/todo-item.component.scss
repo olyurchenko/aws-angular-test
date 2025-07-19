@@ -1,0 +1,43 @@
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  &.completed {
+    opacity: 0.7;
+  }
+}
+
+.todo-content {
+  flex: 1;
+}
+
+.todo-title {
+  font-size: 16px;
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.todo-item.completed .todo-title {
+  text-decoration: line-through;
+  color: #666;
+}
+
+.edit-field {
+  width: 100%;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 8px;
+}
