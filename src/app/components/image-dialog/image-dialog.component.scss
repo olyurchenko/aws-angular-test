@@ -1,0 +1,49 @@
+.image-dialog {
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px 0;
+}
+
+.close-button {
+  margin-left: auto;
+}
+
+.image-container {
+  text-align: center;
+  margin: 16px 0;
+}
+
+.full-image {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.image-description {
+  margin: 16px 0;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.image-description p {
+  margin: 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+mat-dialog-actions {
+  padding: 16px 24px;
+}
+
+mat-dialog-actions button {
+  margin-left: 8px;
+}
