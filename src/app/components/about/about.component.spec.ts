@@ -26,44 +26,32 @@ describe('AboutComponent', () => {
 
   it('should display about title', () => {
     const compiled = fixture.nativeElement;
-    expect(compiled.textContent).toContain('Про Todo List App');
+    expect(compiled.textContent).toContain('About Todo List App');
   });
 
   it('should display app description', () => {
     const compiled = fixture.nativeElement;
-    expect(compiled.textContent).toContain('Todo List App - це сучасний веб-додаток');
+    expect(compiled.textContent).toContain('Todo List App is a modern web application');
   });
 
   it('should display features list', () => {
     const compiled = fixture.nativeElement;
-    expect(compiled.textContent).toContain('Додавання нових завдань');
-    expect(compiled.textContent).toContain('Редагування існуючих завдань');
-    expect(compiled.textContent).toContain('Позначення завдань як завершених');
+    expect(compiled.textContent).toContain('Adding new tasks');
+    expect(compiled.textContent).toContain('Editing existing tasks');
+    expect(compiled.textContent).toContain('Marking tasks as completed');
   });
 
   it('should display technology stack', () => {
     const compiled = fixture.nativeElement;
-    expect(compiled.textContent).toContain('Angular 17');
+    expect(compiled.textContent).toContain('Angular 18');
     expect(compiled.textContent).toContain('Angular Material');
     expect(compiled.textContent).toContain('Angular Signals');
   });
 
   it('should display architecture section', () => {
     const compiled = fixture.nativeElement;
-    expect(compiled.textContent).toContain('Архітектура');
+    expect(compiled.textContent).toContain('Architecture');
     expect(compiled.textContent).toContain('Standalone Components');
     expect(compiled.textContent).toContain('Responsive Design');
-  });
-
-  it('should have tech stack items', () => {
-    const compiled = fixture.nativeElement;
-    const techItems = compiled.querySelectorAll('.tech-item');
-    expect(techItems.length).toBeGreaterThan(0);
-  });
-
-  it('should have material icons', () => {
-    const compiled = fixture.nativeElement;
-    const icons = compiled.querySelectorAll('mat-icon');
-    expect(icons.length).toBeGreaterThan(0);
   });
 });

@@ -1,25 +1,25 @@
-<div class="todo-form">
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Додати нове завдання</mat-label>
-    <input
-      matInput
-      [ngModel]="newTodoTitle()"
-      (ngModelChange)="newTodoTitle.set($event)"
-      (keyup.enter)="addTodo()"
-      placeholder="Введіть назву завдання..."
-      maxlength="100"
-    >
-    <mat-hint align="end">{{ newTodoTitle().length }}/100</mat-hint>
-  </mat-form-field>
+<div class="todo-form-container">
+  <form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="todo-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Task title</mat-label>
+      <input matInput formControlName="title" placeholder="Enter task title">
+      <mat-error *ngIf="todoForm.get('title')?.hasError('required')">
+        Title is required
+      </mat-error>
+    </mat-form-field>
 
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="addTodo()"
-    [disabled]="!newTodoTitle().trim()"
-    class="add-button"
-  >
-    <mat-icon>add</mat-icon>
-    Додати
-  </button>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" placeholder="Enter task description" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="todoForm.invalid">
+        Add Task
+      </button>
+      <button mat-button type="button" (click)="resetForm()">
+        Clear
+      </button>
+    </div>
+  </form>
 </div>

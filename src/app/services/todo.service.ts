@@ -16,10 +16,11 @@ export class TodoService {
     this.todos().filter(todo => !todo.completed)
   );
 
-  addTodo(title: string): void {
+  addTodo(title: string, description?: string): void {
     const newTodo: Todo = {
       id: this.nextId++,
       title: title.trim(),
+      description: description?.trim() || '',
       completed: false,
       createdAt: new Date()
     };
@@ -38,10 +39,14 @@ export class TodoService {
     this.todos.update(todos => todos.filter(todo => todo.id !== id));
   }
 
-  updateTodo(id: number, title: string): void {
+  updateTodo(id: number, title: string, description?: string): void {
     this.todos.update(todos =>
       todos.map(todo =>
-        todo.id === id ? { ...todo, title: title.trim() } : todo
+        todo.id === id ? {
+          ...todo,
+          title: title.trim(),
+          description: description?.trim() || todo.description
+        } : todo
       )
     );
   }

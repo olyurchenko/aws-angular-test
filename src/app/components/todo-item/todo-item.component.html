@@ -1,43 +1,30 @@
 <div class="todo-item" [class.completed]="todo.completed">
-  <mat-checkbox
-    [checked]="todo.completed"
-    (change)="toggleTodo()"
-    color="primary"
-  ></mat-checkbox>
-
   <div class="todo-content">
-    <div *ngIf="!isEditing()" class="todo-title" (dblclick)="startEdit()">
-      {{ todo.title }}
-    </div>
+    <mat-checkbox
+      [checked]="todo.completed"
+      (change)="toggleTodo()"
+      class="todo-checkbox"
+    >
+    </mat-checkbox>
 
-    <mat-form-field *ngIf="isEditing()" appearance="outline" class="edit-field">
-      <input
-        matInput
-        [ngModel]="editTitle()"
-        (ngModelChange)="editTitle.set($event)"
-        (keyup.enter)="saveEdit()"
-        (blur)="saveEdit()"
-        (keyup.escape)="cancelEdit()"
-        autofocus
-      >
-    </mat-form-field>
+    <div class="todo-text">
+      <h3 class="todo-title" [class.completed-text]="todo.completed">
+        {{ todo.title }}
+      </h3>
+      <p class="todo-description" *ngIf="todo.description">
+        {{ todo.description }}
+      </p>
+      <small class="todo-date">
+        Created: {{ todo.createdAt | date:'short' }}
+      </small>
+    </div>
   </div>
 
   <div class="todo-actions">
-    <button
-      mat-icon-button
-      (click)="startEdit()"
-      *ngIf="!isEditing()"
-      color="primary"
-    >
+    <button mat-icon-button (click)="editTodo()" class="edit-button">
       <mat-icon>edit</mat-icon>
     </button>
-
-    <button
-      mat-icon-button
-      (click)="deleteTodo()"
-      color="warn"
-    >
+    <button mat-icon-button (click)="deleteTodo()" class="delete-button">
       <mat-icon>delete</mat-icon>
     </button>
   </div>

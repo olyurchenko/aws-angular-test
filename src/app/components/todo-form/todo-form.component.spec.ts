@@ -1,35 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { TodoFormComponent } from './todo-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TodoService } from '../../services/todo.service';
+
+import { TodoFormComponent } from './todo-form.component';
 
 describe('TodoFormComponent', () => {
   let component: TodoFormComponent;
   let fixture: ComponentFixture<TodoFormComponent>;
-  let todoService: Partial<TodoService>;
+  let todoService: TodoService;
 
   beforeEach(async () => {
-    const mockTodoService = {
+    const todoServiceMock = {
       addTodo: jest.fn()
-    };
+    } as unknown as TodoService;
 
     await TestBed.configureTestingModule({
       imports: [
         TodoFormComponent,
-        FormsModule,
         NoopAnimationsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule
+        ReactiveFormsModule
       ],
       providers: [
-        { provide: TodoService, useValue: mockTodoService }
+        { provide: TodoService, useValue: todoServiceMock }
       ]
     }).compileComponents();
 
@@ -43,29 +36,71 @@ describe('TodoFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add todo when form is submitted', () => {
-    const testTitle = 'Test todo';
-    component.newTodoTitle.set(testTitle);
-
-    component.addTodo();
-
-    expect(todoService.addTodo).toHaveBeenCalledWith(testTitle);
-    expect(component.newTodoTitle()).toBe('');
+  it('should have todoForm', () => {
+    expect(component.todoForm).toBeDefined();
   });
 
-  it('should not add todo when title is empty', () => {
-    component.newTodoTitle.set('');
-
-    component.addTodo();
-
-    expect(todoService.addTodo).not.toHaveBeenCalled();
+  it('should have title field', () => {
+    const compiled = fixture.nativeElement;
+    const titleField = compiled.querySelector('input[formControlName="title"]');
+    expect(titleField).toBeTruthy();
   });
 
-  it('should not add todo when title is only whitespace', () => {
-    component.newTodoTitle.set('   ');
+  it('should have description field', () => {
+    const compiled = fixture.nativeElement;
+    const descriptionField = compiled.querySelector('textarea[formControlName="description"]');
+    expect(descriptionField).toBeTruthy();
+  });
 
-    component.addTodo();
+  it('should have submit button', () => {
+    const compiled = fixture.nativeElement;
+    const submitButton = compiled.querySelector('button[type="submit"]');
+    expect(submitButton).toBeTruthy();
+  });
 
-    expect(todoService.addTodo).not.toHaveBeenCalled();
+  it('should have clear button', () => {
+    const compiled = fixture.nativeElement;
+    const clearButton = compiled.querySelector('button[type="button"]');
+    expect(clearButton).toBeTruthy();
+  });
+
+  it('should call addTodo when form is submitted', () => {
+    const testTitle = 'Test Task';
+    const testDescription = 'Test Description';
+
+    component.todoForm.patchValue({
+      title: testTitle,
+      description: testDescription
+    });
+
+    component.onSubmit();
+
+    expect(todoService.addTodo).toHaveBeenCalledWith(testTitle, testDescription);
+  });
+
+  it('should reset form after submission', () => {
+    const testTitle = 'Test Task';
+
+    component.todoForm.patchValue({
+      title: testTitle,
+      description: 'Test Description'
+    });
+
+    component.onSubmit();
+
+    expect(component.todoForm.get('title')?.value).toBe('');
+    expect(component.todoForm.get('description')?.value).toBe('');
+  });
+
+  it('should reset form when clear button is clicked', () => {
+    component.todoForm.patchValue({
+      title: 'Test Task',
+      description: 'Test Description'
+    });
+
+    component.resetForm();
+
+    expect(component.todoForm.get('title')?.value).toBe('');
+    expect(component.todoForm.get('description')?.value).toBe('');
   });
 });

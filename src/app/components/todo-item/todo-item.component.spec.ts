@@ -1,56 +1,43 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { TodoItemComponent } from './todo-item.component';
-import { TodoService } from '../../services/todo.service';
 import { Todo } from '../../models/todo.model';
+import { TodoService } from '../../services/todo.service';
+
+import { TodoItemComponent } from './todo-item.component';
 
 describe('TodoItemComponent', () => {
   let component: TodoItemComponent;
   let fixture: ComponentFixture<TodoItemComponent>;
-  let todoService: Partial<TodoService>;
-  let testTodo: Todo;
+  let todoService: TodoService;
+
+  const testTodo: Todo = {
+    id: 1,
+    title: 'Test Todo',
+    description: 'Test Description',
+    completed: false,
+    createdAt: new Date()
+  };
 
   beforeEach(async () => {
-    const mockTodoService = {
+    const todoServiceMock = {
       toggleTodo: jest.fn(),
-      deleteTodo: jest.fn(),
-      updateTodo: jest.fn()
-    };
+      deleteTodo: jest.fn()
+    } as unknown as TodoService;
 
     await TestBed.configureTestingModule({
       imports: [
         TodoItemComponent,
-        FormsModule,
-        NoopAnimationsModule,
-        MatCheckboxModule,
-        MatButtonModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule
+        NoopAnimationsModule
       ],
       providers: [
-        { provide: TodoService, useValue: mockTodoService }
+        { provide: TodoService, useValue: todoServiceMock }
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TodoItemComponent);
     component = fixture.componentInstance;
-    todoService = TestBed.inject(TodoService);
-
-    testTodo = {
-      id: 1,
-      title: 'Test todo',
-      completed: false,
-      createdAt: new Date()
-    };
     component.todo = testTodo;
-
+    todoService = TestBed.inject(TodoService);
     fixture.detectChanges();
   });
 
@@ -58,46 +45,59 @@ describe('TodoItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should toggle todo', () => {
-    component.toggleTodo();
+  it('should display todo title', () => {
+    const compiled = fixture.nativeElement;
+    expect(compiled.textContent).toContain('Test Todo');
+  });
+
+  it('should display todo description', () => {
+    const compiled = fixture.nativeElement;
+    expect(compiled.textContent).toContain('Test Description');
+  });
+
+  it('should have checkbox', () => {
+    const compiled = fixture.nativeElement;
+    const checkbox = compiled.querySelector('mat-checkbox');
+    expect(checkbox).toBeTruthy();
+  });
+
+  it('should have edit button', () => {
+    const compiled = fixture.nativeElement;
+    const editButton = compiled.querySelector('.edit-button');
+    expect(editButton).toBeTruthy();
+  });
+
+  it('should have delete button', () => {
+    const compiled = fixture.nativeElement;
+    const deleteButton = compiled.querySelector('.delete-button');
+    expect(deleteButton).toBeTruthy();
+  });
+
+  it('should call toggleTodo when checkbox is clicked', () => {
+    const compiled = fixture.nativeElement;
+    const checkbox = compiled.querySelector('mat-checkbox');
+
+    checkbox.click();
+
     expect(todoService.toggleTodo).toHaveBeenCalledWith(testTodo.id);
   });
 
-  it('should delete todo', () => {
-    component.deleteTodo();
+  it('should call deleteTodo when delete button is clicked', () => {
+    const compiled = fixture.nativeElement;
+    const deleteButton = compiled.querySelector('.delete-button');
+
+    deleteButton.click();
+
     expect(todoService.deleteTodo).toHaveBeenCalledWith(testTodo.id);
   });
 
-  it('should start editing', () => {
-    component.startEdit();
-    expect(component.isEditing()).toBe(true);
-    expect(component.editTitle()).toBe(testTodo.title);
+  it('should have editTodo method', () => {
+    expect(component.editTodo).toBeDefined();
+    expect(typeof component.editTodo).toBe('function');
   });
 
-  it('should save edit', () => {
-    const newTitle = 'Updated todo';
-    component.editTitle.set(newTitle);
-    component.isEditing.set(true);
-
-    component.saveEdit();
-
-    expect(todoService.updateTodo).toHaveBeenCalledWith(testTodo.id, newTitle);
-    expect(component.isEditing()).toBe(false);
-  });
-
-  it('should not save edit if title is empty', () => {
-    component.editTitle.set('');
-    component.isEditing.set(true);
-
-    component.saveEdit();
-
-    expect(todoService.updateTodo).not.toHaveBeenCalled();
-    expect(component.isEditing()).toBe(false);
-  });
-
-  it('should cancel edit', () => {
-    component.isEditing.set(true);
-    component.cancelEdit();
-    expect(component.isEditing()).toBe(false);
+  it('should display creation date', () => {
+    const compiled = fixture.nativeElement;
+    expect(compiled.textContent).toContain('Created:');
   });
 });

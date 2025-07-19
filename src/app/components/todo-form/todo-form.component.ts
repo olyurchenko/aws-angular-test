@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +12,7 @@ import { TodoService } from '../../services/todo.service';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -22,15 +22,27 @@ import { TodoService } from '../../services/todo.service';
   styleUrls: ['./todo-form.component.scss']
 })
 export class TodoFormComponent {
-  newTodoTitle = signal('');
+  todoForm: FormGroup;
 
-  constructor(private todoService: TodoService) {}
+  constructor(
+    private todoService: TodoService,
+    private fb: FormBuilder
+  ) {
+    this.todoForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', Validators.maxLength(500)]
+    });
+  }
 
-  addTodo(): void {
-    const title = this.newTodoTitle();
-    if (title.trim()) {
-      this.todoService.addTodo(title);
-      this.newTodoTitle.set('');
+  onSubmit(): void {
+    if (this.todoForm.valid) {
+      const { title, description } = this.todoForm.value;
+      this.todoService.addTodo(title, description);
+      this.resetForm();
     }
+  }
+
+  resetForm(): void {
+    this.todoForm.reset();
   }
 }
