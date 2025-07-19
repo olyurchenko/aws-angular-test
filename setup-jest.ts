@@ -14,15 +14,17 @@ Object.defineProperty(window, 'getComputedStyle', {
   },
 });
 
-Object.defineProperty(document, 'doctype', {
-  value: '<!DOCTYPE html>',
-});
+// Mock для document.body
+if (!document.body) {
+  document.body = document.createElement('body');
+}
 
-Object.defineProperty(document.body.style, 'transform', {
-  value: () => {
-    return {
-      enumerable: true,
-      configurable: true,
-    };
+// Mock для HighContrastModeDetector
+Object.defineProperty(document.body, 'style', {
+  value: {
+    backgroundColor: '',
+    setProperty: jest.fn(),
+    getPropertyValue: jest.fn(() => ''),
   },
+  writable: true,
 });
