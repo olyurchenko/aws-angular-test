@@ -47,10 +47,14 @@ jobs:
           echo "=== Total size ==="
           du -sh dist/
 
-      - name: Clear S3 bucket
+      - name: Clear S3 bucket manually (no --recursive)
         run: |
-          echo "=== Clearing S3 bucket ==="
-          aws s3 rm s3://${{ secrets.BUCKET_ID }} --recursive
+          echo "=== Listing S3 objects ==="
+          aws s3api list-objects-v2 --bucket ${{ secrets.BUCKET_ID }} --query 'Contents[].Key' --output text | tr '\t' '\n' > objects_to_delete.txt
+          echo "=== Deleting each object ==="
+          while read key; do
+            aws s3api delete-object --bucket ${{ secrets.BUCKET_ID }} --key "$key"
+          done < objects_to_delete.txt
           echo "=== S3 bucket cleared successfully ==="
 
       - name: Deploy to S3
@@ -73,4 +77,3 @@ jobs:
           echo "✅ Files uploaded to S3"
           echo "✅ CloudFront cache invalidated"
           echo "🎉 Deployment successful!"
-
