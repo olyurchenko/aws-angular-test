@@ -1,0 +1,19 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-about',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatDividerModule,
+    MatIconModule
+  ],
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.scss']
+})
+export class AboutComponent {}

@@ -1,0 +1,41 @@
+<div class="gallery-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>photo_library</mat-icon>
+        Галерея зображень
+      </mat-card-title>
+      <mat-card-subtitle>
+        Красиві пейзажі та фотографії
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="gallery-grid">
+        <div
+          class="gallery-item"
+          *ngFor="let image of images"
+          (click)="openImageDialog(image)"
+        >
+          <div class="image-container">
+            <img [src]="image.src" [alt]="image.alt" loading="lazy">
+            <div class="image-overlay">
+              <mat-icon>zoom_in</mat-icon>
+            </div>
+          </div>
+          <div class="image-info">
+            <h3>{{ image.title }}</h3>
+            <p>{{ image.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-info">
+        <p>
+          Галерея містить красиві пейзажі та фотографії, які надихають на творчість
+          та допомагають зосередитися на важливих завданнях.
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
