@@ -1,29 +1,50 @@
-<div class="todo-list-container">
-  <div class="todo-stats">
-    <div class="stat-item">
-      <span class="stat-number">{{ activeTodos().length }}</span>
-      <span class="stat-label">Active</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number">{{ completedTodos().length }}</span>
-      <span class="stat-label">Completed</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number">{{ todosList().length }}</span>
-      <span class="stat-label">Total</span>
-    </div>
-  </div>
+<div class="todo-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>My Todo List</mat-card-title>
+    </mat-card-header>
 
-  <div class="todo-items">
-    <app-todo-item
-      *ngFor="let todo of todosList()"
-      [todo]="todo"
-    ></app-todo-item>
-  </div>
+    <mat-card-content>
+      <app-todo-form></app-todo-form>
 
-  <div class="empty-state" *ngIf="todosList().length === 0">
-    <mat-icon>task_alt</mat-icon>
-    <h3>No tasks yet</h3>
-    <p>Add your first task to get started!</p>
-  </div>
+      <div class="stats">
+        <mat-chip-set>
+          <mat-chip color="primary">
+            Total: {{ todosList().length }}
+          </mat-chip>
+          <mat-chip color="accent">
+            Active: {{ activeTodos().length }}
+          </mat-chip>
+          <mat-chip color="warn">
+            Completed: {{ completedTodos().length }}
+          </mat-chip>
+        </mat-chip-set>
+      </div>
+
+      <mat-divider class="divider"></mat-divider>
+
+      <div class="todos-section">
+        <h3>Active Tasks</h3>
+        <div class="todos-list" *ngIf="activeTodos().length > 0">
+          <app-todo-item
+            *ngFor="let todo of activeTodos()"
+            [todo]="todo"
+          ></app-todo-item>
+        </div>
+        <p class="empty-message" *ngIf="activeTodos().length === 0">
+          No active tasks
+        </p>
+      </div>
+
+      <div class="todos-section" *ngIf="completedTodos().length > 0">
+        <h3>Completed Tasks</h3>
+        <div class="todos-list">
+          <app-todo-item
+            *ngFor="let todo of completedTodos()"
+            [todo]="todo"
+          ></app-todo-item>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

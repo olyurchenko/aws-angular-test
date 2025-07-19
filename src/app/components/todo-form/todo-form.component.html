@@ -3,7 +3,7 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Task title</mat-label>
       <input matInput formControlName="title" placeholder="Enter task title">
-      <mat-error *ngIf="todoForm.get('title')?.hasError('required')">
+      <mat-error *ngIf="shouldShowError('title')">
         Title is required
       </mat-error>
     </mat-form-field>
@@ -14,11 +14,11 @@
     </mat-form-field>
 
     <div class="form-actions">
-      <button mat-raised-button color="primary" type="submit" [disabled]="todoForm.invalid">
-        Add Task
-      </button>
-      <button mat-button type="button" (click)="resetForm()">
+      <button mat-raised-button color="primary" type="button" (click)="resetForm()">
         Clear
+      </button>
+      <button mat-raised-button color="primary" type="submit">
+        Add Task
       </button>
     </div>
   </form>

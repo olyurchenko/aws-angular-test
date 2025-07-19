@@ -1,49 +1,142 @@
 .image-dialog {
-  max-width: 90vw;
-  max-height: 90vh;
+  max-width: 600px;
+  width: 90vw;
+  max-height: 80vh;
+  overflow: hidden;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .dialog-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px 0;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    span {
+      display: block;
+      line-height: 1;
+    }
+  }
 }
 
-.close-button {
-  margin-left: auto;
+.dialog-content {
+  padding: 0;
+  max-height: calc(80vh - 140px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .image-container {
-  text-align: center;
-  margin: 16px 0;
+  position: relative;
+  width: 100%;
+  height: 300px; // Фіксована висота для картинки
+  overflow: hidden;
+  background: #f5f5f5;
+
+  .dialog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 }
 
-.full-image {
-  max-width: 100%;
-  max-height: 60vh;
-  object-fit: contain;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.image-info {
+  padding: 20px 24px;
+  background: white;
+
+  .description {
+    margin: 0;
+    color: #555;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
 }
 
-.image-description {
-  margin: 16px 0;
-  padding: 16px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-}
-
-.image-description p {
-  margin: 0;
-  color: #666;
-  line-height: 1.6;
-}
-
-mat-dialog-actions {
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
   padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+  background: #f8f9fa;
+
+  button {
+    min-width: 80px;
+
+    &[color="primary"] {
+      background-color: #3f51b5;
+      color: white;
+    }
+  }
 }
 
-mat-dialog-actions button {
-  margin-left: 8px;
+// Responsive design
+@media (max-width: 768px) {
+  .image-dialog {
+    width: 95vw;
+    max-height: 90vh;
+  }
+
+  .dialog-header {
+    padding: 16px 20px;
+
+    h2 {
+      font-size: 1.3rem;
+    }
+  }
+
+  .image-container {
+    height: 250px;
+  }
+
+  .image-info {
+    padding: 16px 20px;
+  }
+
+  .dialog-actions {
+    padding: 12px 20px;
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .image-container {
+    height: 200px;
+  }
+
+  .dialog-header h2 {
+    font-size: 1.2rem;
+  }
 }

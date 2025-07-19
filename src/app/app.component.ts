@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { TodoFormComponent } from './components/todo-form/todo-form.component';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +9,7 @@ import { TodoFormComponent } from './components/todo-form/todo-form.component';
   imports: [
     CommonModule,
     RouterModule,
-    SidebarComponent,
-    TodoFormComponent
+    SidebarComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

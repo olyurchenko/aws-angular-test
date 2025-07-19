@@ -1,12 +1,5 @@
 <div class="todo-item" [class.completed]="todo.completed">
   <div class="todo-content">
-    <mat-checkbox
-      [checked]="todo.completed"
-      (change)="toggleTodo()"
-      class="todo-checkbox"
-    >
-    </mat-checkbox>
-
     <div class="todo-text">
       <h3 class="todo-title" [class.completed-text]="todo.completed">
         {{ todo.title }}
@@ -27,5 +20,11 @@
     <button mat-icon-button (click)="deleteTodo()" class="delete-button">
       <mat-icon>delete</mat-icon>
     </button>
+    <mat-checkbox
+      [checked]="todo.completed"
+      (change)="toggleTodo()"
+      class="todo-checkbox"
+    >
+    </mat-checkbox>
   </div>
 </div>
